@@ -9,25 +9,31 @@
 /* Begin PBXBuildFile section */
 		5C4F51BE2B0E3B9D00F0DFF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F51BD2B0E3B9D00F0DFF7 /* AppDelegate.swift */; };
 		5C4F51C02B0E3B9D00F0DFF7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F51BF2B0E3B9D00F0DFF7 /* SceneDelegate.swift */; };
-		5C4F51C22B0E3B9D00F0DFF7 /* FirstScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F51C12B0E3B9D00F0DFF7 /* FirstScreen.swift */; };
+		5C4F51C22B0E3B9D00F0DFF7 /* FirstScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F51C12B0E3B9D00F0DFF7 /* FirstScreenViewController.swift */; };
 		5C4F51C72B0E3B9E00F0DFF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C4F51C62B0E3B9E00F0DFF7 /* Assets.xcassets */; };
 		5C4F51CA2B0E3B9E00F0DFF7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C4F51C82B0E3B9E00F0DFF7 /* LaunchScreen.storyboard */; };
-		5C4F51D32B0E564000F0DFF7 /* FirstScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F51D22B0E564000F0DFF7 /* FirstScreenViewController.swift */; };
-		5C6D58842B0E5B6E003E41EE /* FirstScreenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D58832B0E5B6E003E41EE /* FirstScreenTableViewCell.swift */; };
 		5C6D58862B0E5FCE003E41EE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D58852B0E5FCE003E41EE /* Extensions.swift */; };
+		5CF622752B1A0A2C005E8EFB /* TriviaScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF622742B1A0A2C005E8EFB /* TriviaScreenViewController.swift */; };
+		5CF622782B1A2C2E005E8EFB /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF622772B1A2C2E005E8EFB /* NetworkService.swift */; };
+		5CF6227A2B1A2D1B005E8EFB /* NetworkDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF622792B1A2D1B005E8EFB /* NetworkDataFetcher.swift */; };
+		5CF6227C2B1A2DCE005E8EFB /* DataFetcherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF6227B2B1A2DCE005E8EFB /* DataFetcherService.swift */; };
+		5CF6227F2B1A9F02005E8EFB /* MathScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF6227E2B1A9F02005E8EFB /* MathScreenViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5C4F51BA2B0E3B9D00F0DFF7 /* aliTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aliTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C4F51BD2B0E3B9D00F0DFF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C4F51BF2B0E3B9D00F0DFF7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		5C4F51C12B0E3B9D00F0DFF7 /* FirstScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreen.swift; sourceTree = "<group>"; };
+		5C4F51C12B0E3B9D00F0DFF7 /* FirstScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenViewController.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		5C4F51C62B0E3B9E00F0DFF7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C4F51C92B0E3B9E00F0DFF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5C4F51CB2B0E3B9E00F0DFF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5C4F51D22B0E564000F0DFF7 /* FirstScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenViewController.swift; sourceTree = "<group>"; };
-		5C6D58832B0E5B6E003E41EE /* FirstScreenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenTableViewCell.swift; sourceTree = "<group>"; };
 		5C6D58852B0E5FCE003E41EE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		5CF622742B1A0A2C005E8EFB /* TriviaScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaScreenViewController.swift; sourceTree = "<group>"; };
+		5CF622772B1A2C2E005E8EFB /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		5CF622792B1A2D1B005E8EFB /* NetworkDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDataFetcher.swift; sourceTree = "<group>"; };
+		5CF6227B2B1A2DCE005E8EFB /* DataFetcherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFetcherService.swift; sourceTree = "<group>"; };
+		5CF6227E2B1A9F02005E8EFB /* MathScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathScreenViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,9 +68,10 @@
 			children = (
 				5C4F51BD2B0E3B9D00F0DFF7 /* AppDelegate.swift */,
 				5C4F51BF2B0E3B9D00F0DFF7 /* SceneDelegate.swift */,
-				5C4F51C12B0E3B9D00F0DFF7 /* FirstScreen.swift */,
+				5CF622722B1A09C2005E8EFB /* FirstScreen */,
 				5C6D58852B0E5FCE003E41EE /* Extensions.swift */,
-				5C4F51D12B0E562500F0DFF7 /* Views */,
+				5CF6227D2B1A9EBC005E8EFB /* MathScreen */,
+				5CF622732B1A09D9005E8EFB /* TriviaScreen */,
 				5C4F51C62B0E3B9E00F0DFF7 /* Assets.xcassets */,
 				5C4F51C82B0E3B9E00F0DFF7 /* LaunchScreen.storyboard */,
 				5C4F51CB2B0E3B9E00F0DFF7 /* Info.plist */,
@@ -72,13 +79,39 @@
 			path = aliTest;
 			sourceTree = "<group>";
 		};
-		5C4F51D12B0E562500F0DFF7 /* Views */ = {
+		5CF622722B1A09C2005E8EFB /* FirstScreen */ = {
 			isa = PBXGroup;
 			children = (
-				5C4F51D22B0E564000F0DFF7 /* FirstScreenViewController.swift */,
-				5C6D58832B0E5B6E003E41EE /* FirstScreenTableViewCell.swift */,
+				5C4F51C12B0E3B9D00F0DFF7 /* FirstScreenViewController.swift */,
 			);
-			path = Views;
+			name = FirstScreen;
+			sourceTree = "<group>";
+		};
+		5CF622732B1A09D9005E8EFB /* TriviaScreen */ = {
+			isa = PBXGroup;
+			children = (
+				5CF622742B1A0A2C005E8EFB /* TriviaScreenViewController.swift */,
+				5CF622762B1A2C14005E8EFB /* Service */,
+			);
+			name = TriviaScreen;
+			sourceTree = "<group>";
+		};
+		5CF622762B1A2C14005E8EFB /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				5CF6227B2B1A2DCE005E8EFB /* DataFetcherService.swift */,
+				5CF622792B1A2D1B005E8EFB /* NetworkDataFetcher.swift */,
+				5CF622772B1A2C2E005E8EFB /* NetworkService.swift */,
+			);
+			name = Service;
+			sourceTree = "<group>";
+		};
+		5CF6227D2B1A9EBC005E8EFB /* MathScreen */ = {
+			isa = PBXGroup;
+			children = (
+				5CF6227E2B1A9F02005E8EFB /* MathScreenViewController.swift */,
+			);
+			name = MathScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,12 +184,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C4F51C22B0E3B9D00F0DFF7 /* FirstScreen.swift in Sources */,
+				5CF6227A2B1A2D1B005E8EFB /* NetworkDataFetcher.swift in Sources */,
+				5CF622782B1A2C2E005E8EFB /* NetworkService.swift in Sources */,
+				5C4F51C22B0E3B9D00F0DFF7 /* FirstScreenViewController.swift in Sources */,
 				5C6D58862B0E5FCE003E41EE /* Extensions.swift in Sources */,
 				5C4F51BE2B0E3B9D00F0DFF7 /* AppDelegate.swift in Sources */,
 				5C4F51C02B0E3B9D00F0DFF7 /* SceneDelegate.swift in Sources */,
-				5C4F51D32B0E564000F0DFF7 /* FirstScreenViewController.swift in Sources */,
-				5C6D58842B0E5B6E003E41EE /* FirstScreenTableViewCell.swift in Sources */,
+				5CF6227F2B1A9F02005E8EFB /* MathScreenViewController.swift in Sources */,
+				5CF622752B1A0A2C005E8EFB /* TriviaScreenViewController.swift in Sources */,
+				5CF6227C2B1A2DCE005E8EFB /* DataFetcherService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FirstScreen: UIViewController {
+class FirstScreenViewController: UIViewController {
     
     lazy var stackView = UIStackView(arrangedSubviews: [titleName,triviaButton, mathButton, dateButton, yearButton])
     let titleName = UILabel()
@@ -22,6 +22,12 @@ class FirstScreen: UIViewController {
         setupButtons()
         configureStackView()
         setupLabel()
+        triviaButton.addTarget(self, action: #selector(triviaButtonTapped), for: .touchUpInside)
+        mathButton.addTarget(self, action: #selector(mathButtonTapped), for: .touchUpInside)
+//        dateButton.addTarget(self, action: #selector(triviaButtonTapped), for: .touchUpInside)
+//        yearButton.addTarget(self, action: #selector(triviaButtonTapped), for: .touchUpInside)
+
+        
     }
     
     func setupButtons() {
@@ -37,6 +43,7 @@ class FirstScreen: UIViewController {
         mathButton.setTitle("Math", for: .normal)
         dateButton.setTitle("Date", for: .normal)
         yearButton.setTitle("Year", for: .normal)
+        
     }
     
     func setupLabel() {
@@ -64,6 +71,14 @@ class FirstScreen: UIViewController {
         ])
     }
     
+    @objc func triviaButtonTapped() {
+        let vc = TriviaScreenViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
+    @objc func mathButtonTapped() {
+        let vc = MathScreenViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
