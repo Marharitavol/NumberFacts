@@ -24,9 +24,9 @@ class FirstScreenViewController: UIViewController {
         setupLabel()
         triviaButton.addTarget(self, action: #selector(triviaButtonTapped), for: .touchUpInside)
         mathButton.addTarget(self, action: #selector(mathButtonTapped), for: .touchUpInside)
-//        dateButton.addTarget(self, action: #selector(triviaButtonTapped), for: .touchUpInside)
-//        yearButton.addTarget(self, action: #selector(triviaButtonTapped), for: .touchUpInside)
-
+        dateButton.addTarget(self, action: #selector(dateButtonTapped), for: .touchUpInside)
+        yearButton.addTarget(self, action: #selector(yearButtonTapped), for: .touchUpInside)
+        
         
     }
     
@@ -50,7 +50,7 @@ class FirstScreenViewController: UIViewController {
         titleName.text = "Number Facts"
         titleName.font = titleName.font.withSize(56)
         titleName.textAlignment = .center
-
+        
     }
     
     func configureStackView() {
@@ -72,12 +72,26 @@ class FirstScreenViewController: UIViewController {
     }
     
     @objc func triviaButtonTapped() {
-        let vc = TriviaScreenViewController()
+        let vc = TypesScreenViewController()
+        vc.screenType = .trivia
         navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func mathButtonTapped() {
-        let vc = MathScreenViewController()
+        let vc = TypesScreenViewController()
+        vc.screenType = .math
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func dateButtonTapped() {
+        let vc = TypesScreenViewController()
+        vc.screenType = .date
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func yearButtonTapped() {
+        let vc = TypesScreenViewController()
+        vc.screenType = .year
         navigationController?.pushViewController(vc, animated: true)
     }
 }
