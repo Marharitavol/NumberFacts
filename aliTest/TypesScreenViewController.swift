@@ -10,13 +10,14 @@ import UIKit
 class TypesScreenViewController: UIViewController {
     
     let factsLabel = UILabel()
-    let refreshButton = UIButton(type: .system)
-    
+    let typeYourNumLabel = UILabel()
+    var screenTypeLabel = UILabel()
+
     private let dataFetcherService = DataFetcherService()
     var screenType: Types!
     
-    let typeYourNumLabel = UILabel()
     let textField = UITextField()
+    let refreshButton = UIButton(type: .system)
     let getButton = UIButton(type: .system)
     lazy var stackView = UIStackView(arrangedSubviews: [typeYourNumLabel,textField, getButton])
     
@@ -27,37 +28,41 @@ class TypesScreenViewController: UIViewController {
         
         view.backgroundColor = .secondarySystemBackground
         title = screenType.title
+        
         fetchData(number: "random", type: screenType.rawValue)
+        
         setupStackViewElements()
-        setupButton()
+        setupRefreshButton()
         configureStackView()
         setupConstraints()
+        setupScreenTypeLabel()
+        setupFactsLabel()
+        setupKeyboardLayout()
+        
         textField.delegate = self
     }
-    
+
     func setupStackViewElements() {
-        factsLabel.numberOfLines = 0
-        factsLabel.textAlignment = .center
-        factsLabel.font = factsLabel.font.withSize(25)
         
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 10
         textField.layer.borderColor = UIColor.darkGray.cgColor
         textField.textAlignment = .center
         textField.layer.borderWidth = 1
+        textField.textColor = .darkGray
         
         getButton.layer.cornerRadius = 10
         getButton.setTitle("Done", for: .normal)
         getButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        getButton.tintColor = UIColor.darkGray
+        getButton.tintColor = UIColor.secondarySystemFill
         getButton.layer.borderWidth = 1
         getButton.layer.borderColor = UIColor.darkGray.cgColor
         
         getButton.addTarget(self, action: #selector(getButtonTapped), for: .touchUpInside)
-
+        typeYourNumLabel.text = "Type your number"
     }
     
-    func setupButton() {
+    func setupRefreshButton() {
         refreshButton.layer.cornerRadius = 10
         refreshButton.setTitle("Refresh", for: .normal)
         refreshButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
@@ -68,21 +73,37 @@ class TypesScreenViewController: UIViewController {
         refreshButton.addTarget(self, action: #selector(refreshButtonTapped), for: .touchUpInside)
     }
     
+    func setupFactsLabel() {
+        factsLabel.numberOfLines = 0
+        factsLabel.textAlignment = .center
+        factsLabel.font = factsLabel.font.withSize(25)
+    }
+    
+    func setupScreenTypeLabel() {
+        screenTypeLabel.text = "\(screenType.rawValue.capitalized) Facts"
+        screenTypeLabel.backgroundColor = .opaqueSeparator
+        screenTypeLabel.textAlignment = .center
+        screenTypeLabel.font = screenTypeLabel.font.withSize(25)
+        
+    }
+    
     func configureStackView() {
         stackView.axis = .horizontal
         stackView.distribution = .fillProportionally
         stackView.spacing = 10
-        typeYourNumLabel.text = "Type your number"
     }
     
     func setupConstraints() {
         factsLabel.translatesAutoresizingMaskIntoConstraints = false
         refreshButton.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
+        screenTypeLabel.translatesAutoresizingMaskIntoConstraints = false
+
         view.addSubview(refreshButton)
         view.addSubview(factsLabel)
         view.addSubview(stackView)
+        view.addSubview(screenTypeLabel)
+
         
         NSLayoutConstraint.activate([
             stackView.bottomAnchor.constraint(equalTo: refreshButton.topAnchor, constant: -20),
@@ -98,6 +119,12 @@ class TypesScreenViewController: UIViewController {
             factsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             factsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             factsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
+            
+            screenTypeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            screenTypeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            screenTypeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            screenTypeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
+            screenTypeLabel.heightAnchor.constraint(equalToConstant: 70),
             
             refreshButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -70),
             refreshButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),

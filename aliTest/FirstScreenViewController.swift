@@ -26,8 +26,6 @@ class FirstScreenViewController: UIViewController {
         mathButton.addTarget(self, action: #selector(mathButtonTapped), for: .touchUpInside)
         dateButton.addTarget(self, action: #selector(dateButtonTapped), for: .touchUpInside)
         yearButton.addTarget(self, action: #selector(yearButtonTapped), for: .touchUpInside)
-        
-        
     }
     
     func setupButtons() {
