@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class TypesScreenViewController: UIViewController {
     
@@ -18,8 +19,12 @@ class TypesScreenViewController: UIViewController {
     
     let textField = UITextField()
     let refreshButton = UIButton(type: .system)
-    let getButton = UIButton(type: .system)
-    lazy var stackView = UIStackView(arrangedSubviews: [typeYourNumLabel,textField, getButton])
+    let doneButton = UIButton(type: .system)
+    let favoriteButton = UIButton(type: .system)
+    
+    lazy var stackView = UIStackView(arrangedSubviews: [typeYourNumLabel,textField, doneButton])
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     var textFieldNumbers = String()
     
@@ -33,6 +38,7 @@ class TypesScreenViewController: UIViewController {
         
         setupStackViewElements()
         setupRefreshButton()
+        setupFavoriteButton()
         configureStackView()
         setupConstraints()
         setupScreenTypeLabel()
@@ -43,23 +49,31 @@ class TypesScreenViewController: UIViewController {
     }
 
     func setupStackViewElements() {
-        
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 10
         textField.layer.borderColor = UIColor.darkGray.cgColor
         textField.textAlignment = .center
         textField.layer.borderWidth = 1
         textField.textColor = .darkGray
+        textField.keyboardType = .numbersAndPunctuation
+
+        doneButton.layer.cornerRadius = 10
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        doneButton.tintColor = UIColor.secondarySystemFill
+        doneButton.layer.borderWidth = 1
+        doneButton.layer.borderColor = UIColor.darkGray.cgColor
         
-        getButton.layer.cornerRadius = 10
-        getButton.setTitle("Done", for: .normal)
-        getButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        getButton.tintColor = UIColor.secondarySystemFill
-        getButton.layer.borderWidth = 1
-        getButton.layer.borderColor = UIColor.darkGray.cgColor
-        
-        getButton.addTarget(self, action: #selector(getButtonTapped), for: .touchUpInside)
+        doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         typeYourNumLabel.text = "Type your number"
+    }
+    
+    func setupFavoriteButton() {
+        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        favoriteButton.tintColor = UIColor.systemRed
+        
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+
     }
     
     func setupRefreshButton() {
@@ -84,7 +98,6 @@ class TypesScreenViewController: UIViewController {
         screenTypeLabel.backgroundColor = .opaqueSeparator
         screenTypeLabel.textAlignment = .center
         screenTypeLabel.font = screenTypeLabel.font.withSize(25)
-        
     }
     
     func configureStackView() {
@@ -98,11 +111,13 @@ class TypesScreenViewController: UIViewController {
         refreshButton.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         screenTypeLabel.translatesAutoresizingMaskIntoConstraints = false
+        favoriteButton.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(refreshButton)
         view.addSubview(factsLabel)
         view.addSubview(stackView)
         view.addSubview(screenTypeLabel)
+        view.addSubview(favoriteButton)
 
         
         NSLayoutConstraint.activate([
@@ -113,8 +128,13 @@ class TypesScreenViewController: UIViewController {
             stackView.widthAnchor.constraint(equalToConstant: 300),
             
             textField.widthAnchor.constraint(equalToConstant: 70),
-            getButton.widthAnchor.constraint(equalToConstant: 70),
+            doneButton.widthAnchor.constraint(equalToConstant: 70),
             
+            favoriteButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 150),
+            favoriteButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -120),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 50),
+            favoriteButton.widthAnchor.constraint(equalToConstant: 50),
+
             factsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             factsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             factsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
@@ -139,12 +159,28 @@ class TypesScreenViewController: UIViewController {
             self.factsLabel.text = answer
         })
     }
+
+    @objc func favoriteButtonTapped() {
+        let newFavorite = Favorite(context: self.context)
+        newFavorite.favoritesFacts = factsLabel.text
+        favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+
+        do {
+            try self.context.save()
+        } catch {
+            
+        }
+        print(newFavorite)
+    }
     
     @objc func refreshButtonTapped() {
         fetchData(number: "random", type: screenType.rawValue)
+        textField.text = ""
+        textFieldNumbers = ""
     }
     
-    @objc func getButtonTapped() {
+    @objc func doneButtonTapped() {
+        guard let text = textField.text, !text.isEmpty else { return }
         fetchData(number: textFieldNumbers, type: screenType.rawValue)
     }
 }
@@ -153,6 +189,13 @@ extension TypesScreenViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         textFieldNumbers = textField.text!
+        doneButtonTapped()
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
+        textFieldNumbers = textField.text!
+        doneButtonTapped()
     }
 }

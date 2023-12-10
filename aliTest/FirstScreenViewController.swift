@@ -9,30 +9,31 @@ import UIKit
 
 class FirstScreenViewController: UIViewController {
     
-    lazy var stackView = UIStackView(arrangedSubviews: [titleName,triviaButton, mathButton, dateButton, yearButton])
+    lazy var stackView = UIStackView(arrangedSubviews: [titleName,
+                                                        triviaButton,
+                                                        mathButton,
+                                                        dateButton,
+                                                        yearButton,
+                                                        favoriteButton])
     let titleName = UILabel()
     let triviaButton = UIButton(type: .system)
     let mathButton = UIButton(type: .system)
     let dateButton = UIButton(type: .system)
     let yearButton = UIButton(type: .system)
-    
+    let favoriteButton = UIButton(type: .system)
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .secondarySystemBackground
         setupButtons()
         configureStackView()
         setupLabel()
-        triviaButton.addTarget(self, action: #selector(triviaButtonTapped), for: .touchUpInside)
-        mathButton.addTarget(self, action: #selector(mathButtonTapped), for: .touchUpInside)
-        dateButton.addTarget(self, action: #selector(dateButtonTapped), for: .touchUpInside)
-        yearButton.addTarget(self, action: #selector(yearButtonTapped), for: .touchUpInside)
     }
     
     func setupButtons() {
-        let buttons = [triviaButton, mathButton, dateButton, yearButton]
+        let buttons = [triviaButton, mathButton, dateButton, yearButton, favoriteButton]
         buttons.forEach {
             $0.layer.cornerRadius = 10
-            $0.setTitle("Done", for: .normal)
             $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
             $0.tintColor = UIColor.white
             $0.backgroundColor = .darkGray
@@ -41,7 +42,13 @@ class FirstScreenViewController: UIViewController {
         mathButton.setTitle("Math", for: .normal)
         dateButton.setTitle("Date", for: .normal)
         yearButton.setTitle("Year", for: .normal)
+        favoriteButton.setTitle("Favorite", for: .normal)
         
+        triviaButton.addTarget(self, action: #selector(triviaButtonTapped), for: .touchUpInside)
+        mathButton.addTarget(self, action: #selector(mathButtonTapped), for: .touchUpInside)
+        dateButton.addTarget(self, action: #selector(dateButtonTapped), for: .touchUpInside)
+        yearButton.addTarget(self, action: #selector(yearButtonTapped), for: .touchUpInside)
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
     }
     
     func setupLabel() {
@@ -90,6 +97,11 @@ class FirstScreenViewController: UIViewController {
     @objc func yearButtonTapped() {
         let vc = TypesScreenViewController()
         vc.screenType = .year
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func favoriteButtonTapped() {
+        let vc = FavoriteScreenViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
 }
