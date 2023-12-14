@@ -13,9 +13,11 @@ class TypesScreenViewController: UIViewController {
     let factsLabel = UILabel()
     let typeYourNumLabel = UILabel()
     var screenTypeLabel = UILabel()
-
+    
     private let dataFetcherService = DataFetcherService()
     var screenType: Types!
+    
+    var favoriteItem: Favorite?
     
     let textField = UITextField()
     let refreshButton = UIButton(type: .system)
@@ -27,6 +29,7 @@ class TypesScreenViewController: UIViewController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     var textFieldNumbers = String()
+    var isFavoriteButtonFilled = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,22 +50,22 @@ class TypesScreenViewController: UIViewController {
         
         textField.delegate = self
     }
-
+    
     func setupStackViewElements() {
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 10
-        textField.layer.borderColor = UIColor.darkGray.cgColor
+        textField.layer.borderColor = UIColor.black.cgColor
         textField.textAlignment = .center
         textField.layer.borderWidth = 1
-        textField.textColor = .darkGray
+        textField.textColor = .black
         textField.keyboardType = .numbersAndPunctuation
-
+        
         doneButton.layer.cornerRadius = 10
         doneButton.setTitle("Done", for: .normal)
         doneButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        doneButton.tintColor = UIColor.secondarySystemFill
+        doneButton.tintColor = UIColor.lightGray
         doneButton.layer.borderWidth = 1
-        doneButton.layer.borderColor = UIColor.darkGray.cgColor
+        doneButton.layer.borderColor = UIColor.black.cgColor
         
         doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         typeYourNumLabel.text = "Type your number"
@@ -73,16 +76,15 @@ class TypesScreenViewController: UIViewController {
         favoriteButton.tintColor = UIColor.systemRed
         
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
-
     }
     
     func setupRefreshButton() {
         refreshButton.layer.cornerRadius = 10
         refreshButton.setTitle("Refresh", for: .normal)
         refreshButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        refreshButton.tintColor = .darkGray
+        refreshButton.tintColor = .black
         refreshButton.layer.borderWidth = 1
-        refreshButton.layer.borderColor = UIColor.darkGray.cgColor
+        refreshButton.layer.borderColor = UIColor.black.cgColor
         
         refreshButton.addTarget(self, action: #selector(refreshButtonTapped), for: .touchUpInside)
     }
@@ -112,13 +114,13 @@ class TypesScreenViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         screenTypeLabel.translatesAutoresizingMaskIntoConstraints = false
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
-
+        
         view.addSubview(refreshButton)
         view.addSubview(factsLabel)
         view.addSubview(stackView)
         view.addSubview(screenTypeLabel)
         view.addSubview(favoriteButton)
-
+        
         
         NSLayoutConstraint.activate([
             stackView.bottomAnchor.constraint(equalTo: refreshButton.topAnchor, constant: -20),
@@ -134,7 +136,7 @@ class TypesScreenViewController: UIViewController {
             favoriteButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -120),
             favoriteButton.heightAnchor.constraint(equalToConstant: 50),
             favoriteButton.widthAnchor.constraint(equalToConstant: 50),
-
+            
             factsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             factsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             factsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
@@ -159,29 +161,85 @@ class TypesScreenViewController: UIViewController {
             self.factsLabel.text = answer
         })
     }
-
+    
     @objc func favoriteButtonTapped() {
-        let newFavorite = Favorite(context: self.context)
-        newFavorite.favoritesFacts = factsLabel.text
-        favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            if isFavoriteButtonFilled {
+                removeFromFavorites()
+            } else {
+                addToFavorites()
+            }
 
-        do {
-            try self.context.save()
-        } catch {
-            
+            isFavoriteButtonFilled.toggle()
+            updateButtonUI(isFavorite: isFavoriteButtonFilled)
         }
-        print(newFavorite)
-    }
+
+        func isFavorite() -> Bool {
+            guard let factsText = factsLabel.text else {
+                return false
+            }
+
+            let fetchRequest = Favorite.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "favoritesFacts == %@", factsText)
+
+            do {
+                let result = try context.fetch(fetchRequest)
+                favoriteItem = result.first
+                return !result.isEmpty
+            } catch {
+                print("Failed to fetch favorite item: \(error)")
+                return false
+            }
+        }
+
+        func addToFavorites() {
+            if isFavorite() {
+                return
+            }
+
+            let newFavorite = Favorite(context: context)
+            newFavorite.favoritesFacts = factsLabel.text
+
+            do {
+                try context.save()
+                favoriteItem = newFavorite
+            } catch {
+                print("Failed to save favorite item: \(error)")
+            }
+        }
+
+        func removeFromFavorites() {
+            guard let existingFavorite = favoriteItem else {
+                return
+            }
+
+            context.delete(existingFavorite)
+
+            do {
+                try context.save()
+            } catch {
+                print("Failed to remove favorite item: \(error)")
+            }
+        }
+
+        func updateButtonUI(isFavorite: Bool) {
+            let imageName = isFavorite ? "heart.fill" : "heart"
+            favoriteButton.setImage(UIImage(systemName: imageName), for: .normal)
+        }
+    
     
     @objc func refreshButtonTapped() {
         fetchData(number: "random", type: screenType.rawValue)
         textField.text = ""
         textFieldNumbers = ""
+        doneButton.tintColor = UIColor.lightGray
+        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        isFavoriteButtonFilled = false
     }
     
     @objc func doneButtonTapped() {
         guard let text = textField.text, !text.isEmpty else { return }
         fetchData(number: textFieldNumbers, type: screenType.rawValue)
+        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
     }
 }
 
@@ -197,5 +255,10 @@ extension TypesScreenViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         textFieldNumbers = textField.text!
         doneButtonTapped()
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        doneButton.tintColor = UIColor.black
+        return true
     }
 }

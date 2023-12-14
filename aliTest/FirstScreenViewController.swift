@@ -6,7 +6,6 @@
 //
 
 import UIKit
-
 class FirstScreenViewController: UIViewController {
     
     lazy var stackView = UIStackView(arrangedSubviews: [titleName,
@@ -16,6 +15,7 @@ class FirstScreenViewController: UIViewController {
                                                         yearButton,
                                                         favoriteButton])
     let titleName = UILabel()
+    
     let triviaButton = UIButton(type: .system)
     let mathButton = UIButton(type: .system)
     let dateButton = UIButton(type: .system)

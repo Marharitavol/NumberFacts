@@ -14,13 +14,19 @@ class FavoriteScreenViewController: UIViewController {
     let tableView = UITableView(frame: .zero, style: .plain)
     
     var favorites: [Favorite]?
+    var screenTypeLabel = UILabel()
+    var nameButton = UIButton(type: .system)
+    var dateButton = UIButton(type: .system)
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         setupConstraints()
         fetchFavoriteData()
+        setupScreenTypeLabel()
         tableView.backgroundColor = .white
+        view.backgroundColor = .secondarySystemBackground
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -39,11 +45,27 @@ class FavoriteScreenViewController: UIViewController {
         }
     }
     
+    func setupScreenTypeLabel() {
+        screenTypeLabel.text = "Favorite Facts"
+        screenTypeLabel.backgroundColor = .opaqueSeparator
+        screenTypeLabel.textAlignment = .center
+        screenTypeLabel.font = screenTypeLabel.font.withSize(25)
+    }
+    
     func setupConstraints() {
         view.addSubview(tableView)
+        view.addSubview(screenTypeLabel)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        screenTypeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            
+            screenTypeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            screenTypeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            screenTypeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            screenTypeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            screenTypeLabel.heightAnchor.constraint(equalToConstant: 70),
+            
+            tableView.topAnchor.constraint(equalTo: screenTypeLabel.bottomAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -85,7 +107,6 @@ extension FavoriteScreenViewController: UITableViewDelegate, UITableViewDataSour
             }
             self.fetchFavoriteData()
         }
-        
         return UISwipeActionsConfiguration(actions: [action])
     }
 }
