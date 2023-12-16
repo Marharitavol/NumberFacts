@@ -29,7 +29,7 @@ class TypesScreenViewController: UIViewController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     var textFieldNumbers = String()
-    var isFavoriteButtonFilled = false
+    var isFavoriteButtonFilled = Bool()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,9 +72,16 @@ class TypesScreenViewController: UIViewController {
     }
     
     func setupFavoriteButton() {
-        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+
+        if isFavorite() {
+            isFavoriteButtonFilled = true
+            updateButtonUI(isFavorite: isFavoriteButtonFilled)
+        } else {
+            isFavoriteButtonFilled = false
+            updateButtonUI(isFavorite: isFavoriteButtonFilled)
+        }
+
         favoriteButton.tintColor = UIColor.systemRed
-        
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
     }
     
@@ -156,20 +163,23 @@ class TypesScreenViewController: UIViewController {
     }
     
     func fetchData(number: String, type: String) {
-        dataFetcherService.fetchData(number: number, type: type, completion: { answer in
-            guard let answer = answer else { return }
+        dataFetcherService.fetchData(number: number, type: type, completion: { [weak self] answer in
+            guard let self = self, let answer = answer else { return }
             self.factsLabel.text = answer
+            self.setupFavoriteButton()
         })
     }
     
     @objc func favoriteButtonTapped() {
             if isFavoriteButtonFilled {
                 removeFromFavorites()
+                isFavoriteButtonFilled = false
             } else {
                 addToFavorites()
+                isFavoriteButtonFilled = true
             }
 
-            isFavoriteButtonFilled.toggle()
+//            isFavoriteButtonFilled.toggle()
             updateButtonUI(isFavorite: isFavoriteButtonFilled)
         }
 
@@ -184,7 +194,8 @@ class TypesScreenViewController: UIViewController {
             do {
                 let result = try context.fetch(fetchRequest)
                 favoriteItem = result.first
-                return !result.isEmpty
+                isFavoriteButtonFilled = !result.isEmpty
+                return isFavoriteButtonFilled
             } catch {
                 print("Failed to fetch favorite item: \(error)")
                 return false
@@ -232,14 +243,13 @@ class TypesScreenViewController: UIViewController {
         textField.text = ""
         textFieldNumbers = ""
         doneButton.tintColor = UIColor.lightGray
-        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
         isFavoriteButtonFilled = false
+        updateButtonUI(isFavorite: isFavoriteButtonFilled)
     }
     
     @objc func doneButtonTapped() {
         guard let text = textField.text, !text.isEmpty else { return }
         fetchData(number: textFieldNumbers, type: screenType.rawValue)
-        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
     }
 }
 
