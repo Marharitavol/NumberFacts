@@ -179,7 +179,6 @@ class TypesScreenViewController: UIViewController {
                 isFavoriteButtonFilled = true
             }
 
-//            isFavoriteButtonFilled.toggle()
             updateButtonUI(isFavorite: isFavoriteButtonFilled)
         }
 
@@ -209,6 +208,7 @@ class TypesScreenViewController: UIViewController {
 
             let newFavorite = Favorite(context: context)
             newFavorite.favoritesFacts = factsLabel.text
+            newFavorite.savingDate = Date()
 
             do {
                 try context.save()
@@ -236,7 +236,6 @@ class TypesScreenViewController: UIViewController {
             let imageName = isFavorite ? "heart.fill" : "heart"
             favoriteButton.setImage(UIImage(systemName: imageName), for: .normal)
         }
-    
     
     @objc func refreshButtonTapped() {
         fetchData(number: "random", type: screenType.rawValue)

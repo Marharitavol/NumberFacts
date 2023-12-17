@@ -15,7 +15,6 @@ protocol DataFetcher {
 
 class NetworkDataFetcher: DataFetcher {
     
-    
     var networking: Networking
     
     init(networking: Networking = NetworkService()) {

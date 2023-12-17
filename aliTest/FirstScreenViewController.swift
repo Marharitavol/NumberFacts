@@ -55,7 +55,6 @@ class FirstScreenViewController: UIViewController {
         titleName.text = "Number Facts"
         titleName.font = titleName.font.withSize(56)
         titleName.textAlignment = .center
-        
     }
     
     func configureStackView() {

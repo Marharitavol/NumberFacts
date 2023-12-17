@@ -15,16 +15,21 @@ class FavoriteScreenViewController: UIViewController {
     
     var favorites: [Favorite]?
     var screenTypeLabel = UILabel()
-    var nameButton = UIButton(type: .system)
-    var dateButton = UIButton(type: .system)
-
+    var sortNameButton = UIButton(type: .system)
+    var sortDateButton = UIButton(type: .system)
+    var sortLabel = UILabel()
+    lazy var stackView = UIStackView(arrangedSubviews: [sortLabel, sortDateButton, sortNameButton, UIView()])
     
+    var isNameButtonSortingReversed = true
+    var isDateButtonSortingReversed = true
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         setupConstraints()
         fetchFavoriteData()
         setupScreenTypeLabel()
+        setupStackViewElement()
         tableView.backgroundColor = .white
         view.backgroundColor = .secondarySystemBackground
         
@@ -52,12 +57,41 @@ class FavoriteScreenViewController: UIViewController {
         screenTypeLabel.font = screenTypeLabel.font.withSize(25)
     }
     
+    func setupStackViewElement() {
+        sortLabel.text = "Sort by:"
+        sortLabel.font = sortLabel.font.withSize(15)
+        
+        sortNameButton.setTitle("Name", for: .normal)
+        sortNameButton.tintColor = .black
+        
+        sortDateButton.setTitle("Date", for: .normal)
+        sortDateButton.tintColor = .black
+        
+        stackView.axis = .horizontal
+        stackView.spacing = 30
+        
+        sortNameButton.addTarget(self, action: #selector(sortNameButtonTapped), for: .touchUpInside)
+        sortDateButton.addTarget(self, action: #selector(sortDateButtonTapped), for: .touchUpInside)
+    }
+    
+    func imageButtonConfiguration(button: UIButton ,symbol: String) {
+        button.setImage(UIImage(systemName: symbol, withConfiguration: UIImage.SymbolConfiguration(scale: .small)), for: .normal)
+    }
+    
     func setupConstraints() {
         view.addSubview(tableView)
         view.addSubview(screenTypeLabel)
+        view.addSubview(stackView)
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         screenTypeLabel.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            
+            stackView.topAnchor.constraint(equalTo: screenTypeLabel.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            stackView.heightAnchor.constraint(equalToConstant: 40),
             
             screenTypeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             screenTypeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -65,11 +99,57 @@ class FavoriteScreenViewController: UIViewController {
             screenTypeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             screenTypeLabel.heightAnchor.constraint(equalToConstant: 70),
             
-            tableView.topAnchor.constraint(equalTo: screenTypeLabel.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
+    }
+    
+    @objc func sortNameButtonTapped() {
+        
+        isDateButtonSortingReversed = true
+        imageButtonConfiguration(button: sortDateButton, symbol: "")
+
+        
+        favorites?.sort { (favorite1, favorite2) in
+            guard let facts1 = favorite1.favoritesFacts, let facts2 = favorite2.favoritesFacts else {
+                return false
+            }
+            if isNameButtonSortingReversed {
+                imageButtonConfiguration(button: sortNameButton, symbol: "chevron.up")
+                return facts1.localizedStandardCompare(facts2) == .orderedAscending
+            } else {
+                imageButtonConfiguration(button: sortNameButton, symbol: "chevron.down")
+                return facts1.localizedStandardCompare(facts2) == .orderedDescending
+            }
+        }
+        
+        isNameButtonSortingReversed.toggle()
+
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+    }
+    
+    @objc func sortDateButtonTapped() {
+        
+        isNameButtonSortingReversed = true
+        imageButtonConfiguration(button: sortNameButton, symbol: "")
+        
+        if isDateButtonSortingReversed {
+            imageButtonConfiguration(button: sortDateButton, symbol: "chevron.up")
+            favorites = favorites?.sorted(by: { $0.savingDate ?? Date() > $1.savingDate ?? Date() })
+        } else {
+            imageButtonConfiguration(button: sortDateButton, symbol: "chevron.down")
+            favorites = favorites?.sorted(by: { $0.savingDate ?? Date() < $1.savingDate ?? Date() })
+        }
+        
+        isDateButtonSortingReversed.toggle()
+
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
     }
 }
 
